@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent App - Interactive Wireframe Progression</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f5f7ff',
+                            100: '#ebf0fe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .wireframe-border {
+            border: 2px dashed #cbd5e1
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none
+        }
+        @keyframes soundwave {
+            0%, 100% { height: 8px }
+            50% { height: 28px }
+        }
+        .wave-bar {
+            animation: soundwave 1.2s ease-in-out infinite
+        }
+    </style>
+</head>
+<body class="h-full font-sans antialiased text-slate-800 flex flex-col lg:flex-row items-stretch justify-center overflow-hidden bg-slate-950">
+
+    <!-- Scenario Controller Panel (Left Side) -->
+    <div class="w-full lg:w-96 bg-slate-900 text-slate-300 p-6 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-slate-800 overflow-y-auto no-scrollbar">
+        <div>
+            <div class="flex items-center space-x-2 mb-4">
+                <span class="bg-blue-600 text-white px-2 py-0.5 rounded text-xs font-black tracking-wider">LIVE SIMULATION</span>
+                <span class="text-white font-bold text-sm">Aarav's Afternoon</span>
+            </div>
+
+            <h2 class="text-white text-xl font-black mb-3">The Meltdown Scenario</h2>
+            
+            <!-- Step Indicators -->
+            <div class="space-y-4 my-4">
+                <div id="step-desc-1" class="p-3.5 rounded-xl bg-blue-950/40 border border-blue-800/60 transition-all duration-300">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-5 h-5 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center">1</span>
+                        <h3 class="font-bold text-white text-sm">The Sudden Meltdown</h3>
+                    </div>
+                    <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                        School just ended. Aarav is overwhelmed by the noise and begins a meltdown. You need deep capture fast. Tap the glowing red <b>STRESS</b> button on the mobile screen to begin.
+                    </p>
+                </div>
+
+                <div id="step-desc-2" class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 transition-all duration-300 opacity-40">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-5 h-5 rounded-full bg-slate-700 text-white font-bold text-xs flex items-center justify-center">2</span>
+                        <h3 class="font-bold text-slate-300 text-sm">Rapid Incident Form</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                        One-handed entry mode. Tap the <b>Meltdown</b> tag, select <b>Moderate</b> severity, check <b>Transition</b> as the trigger, then tap the <b>Voice Note</b> mic icon.
+                    </p>
+                </div>
+
+                <div id="step-desc-3" class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 transition-all duration-300 opacity-40">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-5 h-5 rounded-full bg-slate-700 text-white font-bold text-xs flex items-center justify-center">3</span>
+                        <h3 class="font-bold text-slate-300 text-sm">Hands-Free Dictation</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                        You speak the transition trouble. The voice engine captures it clean. Tap <b>DONE DICTATING</b> to finalize the automatic transcription.
+                    </p>
+                </div>
+
+                <div id="step-desc-4" class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 transition-all duration-300 opacity-40">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-5 h-5 rounded-full bg-slate-700 text-white font-bold text-xs flex items-center justify-center">4</span>
+                        <h3 class="font-bold text-slate-300 text-sm">The Zero-Friction Flash</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                        No popups block your flow. The app saves instantly and shows a green success toast. Click the <b>Timeline</b> button on the toast or bottom bar to see the entry.
+                    </p>
+                </div>
+
+                <div id="step-desc-5" class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 transition-all duration-300 opacity-40">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-5 h-5 rounded-full bg-slate-700 text-white font-bold text-xs flex items-center justify-center">5</span>
+                        <h3 class="font-bold text-slate-300 text-sm">Value Feedback Loop</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                        The dashboard registers the event, links it with previous habits, and shows a pattern suggestion instantly. Tap <b>Restart Scenario</b> to play again.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scenario Skip Controls -->
+        <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+            <button onclick="prevStep()" id="prev-btn" class="px-3 py-1.5 rounded bg-slate-800 text-xs text-slate-400 hover:text-white transition disabled:opacity-30 disabled:pointer-events-none" disabled>
+                Previous Step
+            </button>
+            <button onclick="nextStep()" id="next-btn" class="px-3 py-1.5 rounded bg-blue-600 hover:bg-blue-700 text-xs text-white font-bold transition">
+                Skip Forward
+            </button>
+        </div>
+    </div>
+
+    <!-- Phone Simulator Workspace (Right Side) -->
+    <div class="flex-1 flex flex-col items-center justify-center p-4 md:p-8 overflow-y-auto no-scrollbar">
+        
+        <!-- Interactive Smartphone Shell -->
+        <div class="relative w-full max-w-sm h-[780px] bg-slate-900 rounded-[48px] shadow-2xl overflow-hidden flex flex-col border-4 border-slate-800">
+            
+            <!-- Dynamic Ear Speaker & Camera Island -->
+            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-slate-900 rounded-b-2xl z-50 flex items-center justify-center">
+                <div class="w-12 h-1 bg-slate-800 rounded-full mb-1"></div>
+            </div>
+
+            <!-- Toast Notification Container (Inside the phone frame) -->
+            <div id="phone-toast" class="absolute top-12 left-4 right-4 z-50 transform -translate-y-20 opacity-0 transition-all duration-300 pointer-events-auto cursor-pointer" onclick="goToTimelineFromToast()">
+                <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-xl flex items-center justify-between border border-emerald-500/30">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span class="text-xs font-bold text-slate-200">Incident saved to Aarav's Timeline</span>
+                    </div>
+                    <span class="text-[10px] text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded font-bold">VIEW NOW</span>
+                </div>
+            </div>
+
+            <!-- Phone Screen Viewport -->
+            <div class="flex-1 bg-slate-50 overflow-y-auto relative flex flex-col no-scrollbar pt-6 pb-16">
+                
+                <!-- SCREEN 1: QUICK CAPTURE HOME -->
+                <div id="wire-screen-1" class="flex-1 flex flex-col px-4 pt-4 space-y-5">
+                    
+                    <!-- Header -->
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Child:</span>
+                            <div class="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200 flex items-center space-x-1">
+                                <span class="text-sm font-black text-slate-800">Aarav</span>
+                                <span class="text-[8px] text-slate-500">▼</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-1.5 bg-emerald-50 px-2 py-1 rounded-full border border-emerald-100">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            <span class="text-[9px] font-bold text-emerald-700 uppercase tracking-wide">Stored Locally</span>
+                        </div>
+                    </div>
+
+                    <!-- Voice Mic Section -->
+                    <div class="bg-white rounded-3xl p-6 border-2 border-slate-200 shadow-sm flex flex-col items-center justify-center text-center space-y-4">
+                        <div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center border-2 border-slate-200">
+                            <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wide">Hold to speak</p>
+                            <p class="text-[11px] text-slate-400 mt-1">"Aarav slept well and ate breakfast"</p>
+                        </div>
+                    </div>
+
+                    <!-- 1-Touch Quick Tags Grid -->
+                    <div class="space-y-3">
+                        <h3 class="text-xs font-black text-slate-400 uppercase tracking-wider">Quick Tag Logging</h3>
+                        
+                        <!-- Behavior row -->
+                        <div class="space-y-1.5">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase">Behavior</span>
+                            <div class="grid grid-cols-3 gap-1.5">
+                                <div class="bg-white border-2 border-dashed border-slate-200 rounded-xl p-2.5 text-center cursor-not-allowed opacity-50">
+                                    <span class="text-sm">🔴</span>
+                                    <p class="text-[10px] font-bold text-slate-500 mt-0.5">Meltdown</p>
+                                </div>
+                                <div class="bg-white border-2 border-dashed border-slate-200 rounded-xl p-2.5 text-center cursor-not-allowed opacity-50">
+                                    <span class="text-sm">🟢</span>
+                                    <p class="text-[10px] font-bold text-slate-500 mt-0.5">Calm</p>
+                                </div>
+                                <div class="bg-white border-2 border-dashed border-slate-200 rounded-xl p-2.5 text-center cursor-not-allowed opacity-50">
+                                    <span class="text-sm">⚡</span>
+                                    <p class="text-[10px] font-bold text-slate-500 mt-0.5">Aggressive</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Diet row -->
+                        <div class="space-y-1.5">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase">Food</span>
+                            <div class="grid grid-cols-2 gap-1.5">
+                                <div class="bg-white border-2 border-dashed border-slate-200 rounded-xl p-2.5 flex items-center space-x-2 justify-center cursor-not-allowed opacity-50">
+                                    <span class="text-sm">🍽️</span>
+                                    <span class="text-[10px] font-bold text-slate-500">Ate Well</span>
+                                </div>
+                                <div class="bg-white border-2 border-dashed border-slate-200 rounded-xl p-2.5 flex items-center space-x-2 justify-center cursor-not-allowed opacity-50">
+                                    <span class="text-sm">🙅‍♂️</span>
+                                    <span class="text-[10px] font-bold text-slate-500">Refused</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- SCREEN 2: RAPID INCIDENT FORM -->
+                <div id="wire-screen-2" class="hidden flex-1 flex flex-col px-4 pt-4 space-y-5">
+                    
+                    <!-- Header navigation -->
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs text-slate-400 font-bold">← Back</span>
+                            <h2 class="text-sm font-black text-slate-800">Log Incident</h2>
+                        </div>
+                        <span class="text-[10px] font-bold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded uppercase">Stress Mode</span>
+                    </div>
+
+                    <!-- Sec 1: What Happened -->
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-wider">Sec 1: What Happened? *</label>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button id="p-meltdown" onclick="toggleFormPill('p-meltdown')" class="px-3 py-1.5 rounded-full border-2 border-slate-200 bg-white text-slate-700 font-bold text-xs hover:border-slate-300 transition duration-150">Meltdown</button>
+                            <button id="p-aggression" onclick="toggleFormPill('p-aggression')" class="px-3 py-1.5 rounded-full border-2 border-slate-200 bg-white text-slate-700 font-bold text-xs hover:border-slate-300 transition duration-150">Aggression</button>
+                            <button id="p-shutdown" onclick="toggleFormPill('p-shutdown')" class="px-3 py-1.5 rounded-full border-2 border-slate-200 bg-white text-slate-700 font-bold text-xs hover:border-slate-300 transition duration-150">Shutdown</button>
+                            <button id="p-sensory" onclick="toggleFormPill('p-sensory')" class="px-3 py-1.5 rounded-full border-2 border-slate-200 bg-white text-slate-700 font-bold text-xs hover:border-slate-300 transition duration-150">Sensory overload</button>
+                        </div>
+                    </div>
+
+                    <!-- Sec 2: Severity Slider -->
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-wider">Sec 2: Severity</label>
+                        <div class="bg-white border-2 border-slate-200 rounded-2xl p-3.5 space-y-2">
+                            <div class="flex justify-between text-[10px] font-extrabold uppercase">
+                                <span id="sev-1" class="text-slate-400">Mild</span>
+                                <span id="sev-2" class="text-slate-400">Moderate</span>
+                                <span id="sev-3" class="text-slate-400">Severe</span>
+                            </div>
+                            <input type="range" id="severity-slider" min="1" max="3" value="1" oninput="slideSeverity(this.value)" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                        </div>
+                    </div>
+
+                    <!-- Sec 3: Triggers -->
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-wider">Sec 3: Triggers</label>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button id="t-noise" onclick="toggleTriggerPill('t-noise')" class="px-3 py-1.5 rounded-full border-2 border-slate-200 bg-white text-slate-600 font-bold text-xs hover:border-slate-300 transition duration-150">Noise</button>
+                            <button id="t-transition" onclick="toggleTriggerPill('t-transition')" class="px-3 py-1.5 rounded-full border-2 border-slate-200 bg-white text-slate-600 font-bold text-xs hover:border-slate-300 transition duration-150">Transition</button>
+                            <button id="t-school" onclick="toggleTriggerPill('t-school')" class="px-3 py-1.5 rounded-full border-2 border-slate-200 bg-white text-slate-600 font-bold text-xs hover:border-slate-300 transition duration-150">School</button>
+                        </div>
+                    </div>
+
+                    <!-- Sec 4: Notes -->
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-wider">Sec 4: Quick Notes</label>
+                        <div class="bg-white border-2 border-slate-200 rounded-2xl p-3 relative flex flex-col justify-between h-20">
+                            <textarea id="note-textbox" placeholder="Tap voice dictation to enter hands-free note..." class="w-full text-xs text-slate-700 bg-transparent border-none focus:outline-none resize-none no-scrollbar h-8" readonly></textarea>
+                            
+                            <div class="flex justify-end pt-1">
+                                <button id="mic-dictate-btn" onclick="startDictation()" class="flex items-center space-x-1 text-[11px] text-blue-600 font-bold bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-full transition hover:bg-blue-100">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                                    </svg>
+                                    <span>Voice Note</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form submission CTAs -->
+                    <div class="grid grid-cols-2 gap-2 pt-2">
+                        <button class="bg-slate-200 text-slate-500 rounded-xl py-3 text-xs font-bold cursor-not-allowed" disabled>Save</button>
+                        <button class="bg-slate-200 text-slate-500 rounded-xl py-3 text-xs font-bold cursor-not-allowed" disabled>Save & Remind</button>
+                    </div>
+
+                </div>
+
+                <!-- SCREEN 3: VOICE DICTATION LISTENING -->
+                <div id="wire-screen-3" class="hidden flex-1 flex flex-col px-4 pt-4 space-y-6">
+                    
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                        <h2 class="text-sm font-black text-slate-800">Dictation Input</h2>
+                        <span class="text-[10px] text-blue-600 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded font-black">Voice Active</span>
+                    </div>
+
+                    <div class="bg-white border-2 border-slate-200 rounded-3xl p-5 flex flex-col items-center justify-center space-y-6 flex-1 text-center">
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Listening...</div>
+                        
+                        <!-- Sound wave visualizer wireframe simulation -->
+                        <div class="flex items-center justify-center space-x-2 h-12 w-full">
+                            <span class="w-1.5 bg-blue-600 rounded-full wave-bar" style="animation-delay: 0.1s; height: 10px;"></span>
+                            <span class="w-1.5 bg-blue-600 rounded-full wave-bar" style="animation-delay: 0.3s; height: 24px;"></span>
+                            <span class="w-1.5 bg-blue-500 rounded-full wave-bar" style="animation-delay: 0.5s; height: 40px;"></span>
+                            <span class="w-1.5 bg-blue-600 rounded-full wave-bar" style="animation-delay: 0.2s; height: 28px;"></span>
+                            <span class="w-1.5 bg-blue-400 rounded-full wave-bar" style="animation-delay: 0.4s; height: 12px;"></span>
+                        </div>
+
+                        <!-- Spoken text feedback box -->
+                        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 w-full">
+                            <p class="text-xs text-slate-400 uppercase font-bold tracking-wider text-left mb-1">Real-time Transcript</p>
+                            <p class="text-sm font-black text-slate-800 text-left italic">"Transition from school was too loud today..."</p>
+                        </div>
+
+                        <button onclick="finishDictating()" class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-2xl text-xs hover:bg-blue-700 shadow-md transition-all">
+                            DONE DICTATING
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- SCREEN 4: INSTANT CONFIRMATION FLASH -->
+                <div id="wire-screen-4" class="hidden flex-1 flex flex-col px-4 pt-4 space-y-5">
+                    
+                    <!-- Simulating the top flash banner confirmation -->
+                    <div class="bg-emerald-900 text-white p-3.5 rounded-2xl shadow-lg border border-emerald-700 flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse"></span>
+                            <span class="text-xs font-bold">Logged successfully</span>
+                        </div>
+                        <span class="text-[10px] text-emerald-300">3:44 PM</span>
+                    </div>
+
+                    <!-- Header -->
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Child:</span>
+                            <div class="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200 flex items-center space-x-1">
+                                <span class="text-sm font-black text-slate-800">Aarav</span>
+                                <span class="text-[8px] text-slate-500">▼</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-1.5 bg-emerald-50 px-2 py-1 rounded-full border border-emerald-100">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            <span class="text-[9px] font-bold text-emerald-700 uppercase tracking-wide">Stored Locally</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Screen center -->
+                    <div class="bg-white rounded-3xl p-6 border-2 border-slate-200 shadow-sm flex flex-col items-center justify-center text-center space-y-4">
+                        <div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center border-2 border-slate-200">
+                            <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wide">Hold to speak</p>
+                            <p class="text-[11px] text-slate-400 mt-1">"Had a meltdown after lunch"</p>
+                        </div>
+                    </div>
+
+                    <!-- Timeline hint button -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 text-center space-y-2">
+                        <p class="text-xs font-bold text-blue-900">New entry recorded on timeline</p>
+                        <button onclick="goToTimelineFromToast()" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-xl text-[10px] hover:bg-blue-700 transition">
+                            OPEN TIMELINE VIEW
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- SCREEN 5: TIMELINE / DAILY DASHBOARD -->
+                <div id="wire-screen-5" class="hidden flex-1 flex flex-col">
+                    
+                    <!-- Dashboard Header Area -->
+                    <div class="bg-slate-900 text-white px-4 py-5 shadow-inner">
+                        <div class="space-y-1">
+                            <span class="text-[10px] text-slate-400 uppercase font-black tracking-wider">Dashboard</span>
+                            <h2 class="text-lg font-black tracking-tight">Today with Aarav</h2>
+                        </div>
+
+                        <!-- Mini Counters -->
+                        <div class="grid grid-cols-4 gap-1.5 mt-4">
+                            <div class="bg-white/10 p-2 rounded-xl text-center">
+                                <p class="text-[9px] text-slate-300 uppercase">Sleep</p>
+                                <p class="text-xs font-black mt-0.5">6 hrs</p>
+                            </div>
+                            <div class="bg-white/10 p-2 rounded-xl text-center">
+                                <p class="text-[9px] text-slate-300 uppercase">Meals</p>
+                                <p class="text-xs font-black mt-0.5">2</p>
+                            </div>
+                            <div class="bg-white/10 p-2 rounded-xl text-center">
+                                <p class="text-[9px] text-slate-300 uppercase">Meds</p>
+                                <p class="text-xs font-black mt-0.5">1</p>
+                            </div>
+                            <div class="bg-white/10 p-2 rounded-xl text-center border border-red-500/30">
+                                <p class="text-[9px] text-slate-300 uppercase">Incidents</p>
+                                <p class="text-xs font-black text-rose-300 mt-0.5">1</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scrollable Dashboard Content -->
+                    <div class="px-4 py-4 space-y-5 flex-1">
+                        
+                        <!-- Timeline Feed Section -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-wide">Today's Timeline</h3>
+                                <span class="text-[10px] text-slate-400">2 items saved</span>
+                            </div>
+
+                            <div class="space-y-2">
+                                <!-- Newly logged incident item card -->
+                                <div class="bg-white border-2 border-red-200 rounded-2xl p-3 shadow-2xs flex items-start justify-between space-x-2">
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-lg p-1 bg-red-50 rounded-lg">⚠️</span>
+                                        <div>
+                                            <div class="flex items-center space-x-2">
+                                                <h4 class="font-black text-slate-800 text-xs">Meltdown (Moderate)</h4>
+                                                <span class="text-[9px] text-red-600 bg-red-50 px-1.5 py-0.5 rounded font-bold uppercase">Behavior</span>
+                                            </div>
+                                            <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Trigger: Transition. Note: Transition from school was too loud today.</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-[9px] text-slate-400 font-bold whitespace-nowrap">3:43 PM</span>
+                                </div>
+
+                                <!-- Morning Med Card -->
+                                <div class="bg-white border-2 border-slate-200 rounded-2xl p-3 shadow-2xs flex items-start justify-between space-x-2">
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-lg p-1 bg-slate-50 rounded-lg">💊</span>
+                                        <div>
+                                            <div class="flex items-center space-x-2">
+                                                <h4 class="font-black text-slate-800 text-xs">Medication Taken</h4>
+                                                <span class="text-[9px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded font-bold uppercase">Meds</span>
+                                            </div>
+                                            <p class="text-[11px] text-slate-500 mt-0.5">Morning dosage confirmed.</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-[9px] text-slate-400 font-bold whitespace-nowrap">8:15 AM</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Behavioral Pattern Suggestions -->
+                        <div class="bg-amber-50 border border-amber-100 rounded-2xl p-4 space-y-2">
+                            <h4 class="text-xs font-black text-amber-800 uppercase tracking-wide flex items-center space-x-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                </svg>
+                                <span>Patterns Observed</span>
+                            </h4>
+                            <ul class="text-[11px] text-amber-900/90 space-y-1 list-disc pl-4 leading-relaxed font-bold">
+                                <li>Meltdowns were more common on low-sleep days this week</li>
+                                <li>Focus improved after earlier medication timing</li>
+                            </ul>
+                        </div>
+
+                        <!-- One-Tap reflection widget -->
+                        <div class="bg-white border-2 border-slate-200 rounded-2xl p-4 shadow-2xs space-y-3 text-center">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider">One-Tap Reflection</p>
+                            <p class="text-xs font-bold text-slate-700">How did today feel overall?</p>
+                            <div class="grid grid-cols-3 gap-1.5">
+                                <button class="py-2 border border-slate-200 hover:border-blue-600 hover:bg-blue-50/20 rounded-xl text-[10px] font-bold text-slate-600 transition">Better</button>
+                                <button class="py-2 border border-slate-200 hover:border-blue-600 hover:bg-blue-50/20 rounded-xl text-[10px] font-bold text-slate-600 transition">Typical</button>
+                                <button class="py-2 border border-slate-200 hover:border-blue-600 hover:bg-blue-50/20 rounded-xl text-[10px] font-bold text-slate-600 transition">Difficult</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Stress Mode Red Quick Trigger Button -->
+            <div id="quick-stress-fab" class="absolute bottom-18 right-4 z-40">
+                <button onclick="triggerStressMode()" class="w-12 h-12 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-150 transform active:scale-95 focus:outline-none ring-4 ring-red-500/20 animate-pulse">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Wireframe Navigation Bar -->
+            <div class="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-200 px-4 flex justify-between items-center z-40">
+                <button id="nav-btn-home" onclick="goToHome()" class="flex flex-col items-center justify-center flex-1 py-1 text-blue-600 font-bold transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    <span class="text-[9px] mt-0.5">Home</span>
+                </button>
+                <button id="nav-btn-timeline" onclick="goToTimeline()" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-400 font-bold transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                    <span class="text-[9px] mt-0.5">Timeline</span>
+                </button>
+                <div class="w-12"></div>
+                <button onclick="mockAction('Insights')" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-400 font-bold transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                    <span class="text-[9px] mt-0.5">Insights</span>
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Semicolon-free State Routing -->
+    <script>
+        let currentStep = 1
+
+        function updateSimulationUI() {
+            document.getElementById("wire-screen-1").classList.add("hidden")
+            document.getElementById("wire-screen-2").classList.add("hidden")
+            document.getElementById("wire-screen-3").classList.add("hidden")
+            document.getElementById("wire-screen-4").classList.add("hidden")
+            document.getElementById("wire-screen-5").classList.add("hidden")
+
+            for (let i = 1; i <= 5; i++) {
+                const el = document.getElementById(`step-desc-${i}`)
+                el.className = "p-3.5 rounded-xl bg-slate-900 border border-slate-800 transition-all duration-300 opacity-40"
+            }
+
+            document.getElementById("phone-toast").className = "absolute top-12 left-4 right-4 z-50 transform -translate-y-20 opacity-0 transition-all duration-300 pointer-events-none"
+
+            document.getElementById("nav-btn-home").className = "flex flex-col items-center justify-center flex-1 py-1 text-slate-400 font-bold transition"
+            document.getElementById("nav-btn-timeline").className = "flex flex-col items-center justify-center flex-1 py-1 text-slate-400 font-bold transition"
+
+            const activeController = document.getElementById(`step-desc-${currentStep}`)
+            activeController.className = "p-3.5 rounded-xl bg-blue-950/40 border border-blue-800/60 transition-all duration-300 shadow-lg scale-102"
+
+            if (currentStep === 1) {
+                document.getElementById("wire-screen-1").classList.remove("hidden")
+                document.getElementById("nav-btn-home").className = "flex flex-col items-center justify-center flex-1 py-1 text-blue-600 font-bold transition"
+                document.getElementById("quick-stress-fab").className = "absolute bottom-18 right-4 z-40 scale-110"
+                document.getElementById("prev-btn").disabled = true
+                document.getElementById("next-btn").textContent = "Skip Forward"
+            } else if (currentStep === 2) {
+                document.getElementById("wire-screen-2").classList.remove("hidden")
+                document.getElementById("quick-stress-fab").className = "absolute bottom-18 right-4 z-40 opacity-20 pointer-events-none"
+                document.getElementById("prev-btn").disabled = false
+                document.getElementById("next-btn").textContent = "Skip Forward"
+            } else if (currentStep === 3) {
+                document.getElementById("wire-screen-3").classList.remove("hidden")
+                document.getElementById("quick-stress-fab").className = "absolute bottom-18 right-4 z-40 opacity-20 pointer-events-none"
+                document.getElementById("prev-btn").disabled = false
+                document.getElementById("next-btn").textContent = "Skip Forward"
+            } else if (currentStep === 4) {
+                document.getElementById("wire-screen-4").classList.remove("hidden")
+                document.getElementById("nav-btn-home").className = "flex flex-col items-center justify-center flex-1 py-1 text-blue-600 font-bold transition"
+                document.getElementById("quick-stress-fab").className = "absolute bottom-18 right-4 z-40 scale-100"
+                document.getElementById("phone-toast").className = "absolute top-12 left-4 right-4 z-50 transform translate-y-0 opacity-100 transition-all duration-300 pointer-events-auto cursor-pointer"
+                document.getElementById("prev-btn").disabled = false
+                document.getElementById("next-btn").textContent = "Skip Forward"
+            } else if (currentStep === 5) {
+                document.getElementById("wire-screen-5").classList.remove("hidden")
+                document.getElementById("nav-btn-timeline").className = "flex flex-col items-center justify-center flex-1 py-1 text-blue-600 font-bold transition"
+                document.getElementById("quick-stress-fab").className = "absolute bottom-18 right-4 z-40 scale-100"
+                document.getElementById("prev-btn").disabled = false
+                document.getElementById("next-btn").textContent = "Restart Scenario"
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < 5) {
+                currentStep++
+            } else {
+                currentStep = 1
+                resetFormState()
+            }
+            updateSimulationUI()
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--
+                updateSimulationUI()
+            }
+        }
+
+        function triggerStressMode() {
+            if (currentStep === 1) {
+                currentStep = 2
+                updateSimulationUI()
+            }
+        }
+
+        function toggleFormPill(id) {
+            if (currentStep === 2) {
+                const button = document.getElementById(id)
+                button.classList.toggle("bg-blue-50")
+                button.classList.toggle("border-blue-600")
+                button.classList.toggle("text-blue-700")
+                checkFormValidity()
+            }
+        }
+
+        function toggleTriggerPill(id) {
+            if (currentStep === 2) {
+                const button = document.getElementById(id)
+                button.classList.toggle("bg-amber-50")
+                button.classList.toggle("border-amber-500")
+                button.classList.toggle("text-amber-800")
+                checkFormValidity()
+            }
+        }
+
+        function slideSeverity(value) {
+            const sev1 = document.getElementById("sev-1")
+            const sev2 = document.getElementById("sev-2")
+            const sev3 = document.getElementById("sev-3")
+
+            sev1.className = "text-slate-400"
+            sev2.className = "text-slate-400"
+            sev3.className = "text-slate-400"
+
+            if (value == "1") {
+                sev1.className = "text-emerald-500 font-black"
+            } else if (value == "2") {
+                sev2.className = "text-amber-500 font-black"
+            } else {
+                sev3.className = "text-red-500 font-black"
+            }
+            checkFormValidity()
+        }
+
+        function startDictation() {
+            if (currentStep === 2) {
+                currentStep = 3
+                updateSimulationUI()
+            }
+        }
+
+        function finishDictating() {
+            if (currentStep === 3) {
+                currentStep = 4
+                document.getElementById("note-textbox").value = "Transition from school was too loud today."
+                updateSimulationUI()
+            }
+        }
+
+        function goToTimelineFromToast() {
+            currentStep = 5
+            updateSimulationUI()
+        }
+
+        function goToTimeline() {
+            currentStep = 5
+            updateSimulationUI()
+        }
+
+        function goToHome() {
+            currentStep = 1
+            updateSimulationUI()
+        }
+
+        function checkFormValidity() {
+            const isMeltdownSelected = document.getElementById("p-meltdown").classList.contains("border-blue-600")
+            const isTransitionSelected = document.getElementById("t-transition").classList.contains("border-amber-500")
+            
+            if (isMeltdownSelected && isTransitionSelected) {
+                document.getElementById("mic-dictate-btn").classList.add("animate-bounce")
+            } else {
+                document.getElementById("mic-dictate-btn").classList.remove("animate-bounce")
+            }
+        }
+
+        function resetFormState() {
+            const formPills = ["p-meltdown", "p-aggression", "p-shutdown", "p-sensory"]
+            formPills.forEach(id => {
+                const button = document.getElementById(id)
+                button.className = "px-3 py-1.5 rounded-full border-2 border-slate-200 bg-white text-slate-700 font-bold text-xs hover:border-slate-300 transition duration-150"
+            })
+
+            const triggerPills = ["t-noise", "t-transition", "t-school"]
+            triggerPills.forEach(id => {
+                const button = document.getElementById(id)
+                button.className = "px-3 py-1.5 rounded-full border-2 border-slate-200 bg-white text-slate-600 font-bold text-xs hover:border-slate-300 transition duration-150"
+            })
+
+            document.getElementById("note-textbox").value = ""
+            document.getElementById("severity-slider").value = 1
+            slideSeverity(1)
+        }
+
+        function mockAction(type) {
+            document.getElementById("phone-toast").className = "absolute top-12 left-4 right-4 z-50 transform translate-y-0 opacity-100 transition-all duration-300 pointer-events-auto"
+            document.getElementById("phone-toast").innerHTML = `
+                <div class="bg-slate-900 text-white p-3.5 rounded-2xl shadow-xl border border-blue-500/30">
+                    <p class="text-xs font-bold text-slate-200">${type} tab is a simulated mockup</p>
+                    <p class="text-[10px] text-slate-400 mt-1">Focusing on critical low-friction logging wireframe paths instead.</p>
+                </div>
+            `
+            setTimeout(() => {
+                document.getElementById("phone-toast").className = "absolute top-12 left-4 right-4 z-50 transform -translate-y-20 opacity-0 transition-all duration-300 pointer-events-none"
+            }, 3000)
+        }
+
+        updateSimulationUI()
+    </script>
+</body>
+</html>

@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Capture - Wireframe Prototypes</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f5f7ff',
+                            100: '#ebf0fe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles for mobile-first frame preview */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        /* Hide scrollbars but keep functionality */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="h-full font-sans antialiased text-slate-800 flex flex-col md:flex-row items-stretch justify-center overflow-hidden">
+
+    <!-- Left side controls & tester dashboard (only visible on tablet/desktop) -->
+    <div class="hidden lg:flex lg:w-96 bg-slate-800 text-slate-300 p-6 flex-col justify-between border-r border-slate-700 overflow-y-auto">
+        <div>
+            <div class="flex items-center space-x-2 mb-6">
+                <span class="bg-blue-600 text-white px-2.5 py-1 rounded text-xs font-bold tracking-wider">PROTOTYPE</span>
+                <span class="text-white font-semibold">CareSync QuickLog</span>
+            </div>
+            
+            <h2 class="text-white text-lg font-bold mb-2">Interactive Wireframe Demo</h2>
+            <p class="text-xs text-slate-400 mb-6 leading-relaxed">
+                This environment lets you test the extreme low-friction concepts defined in your specifications. Tap items in the simulated app to see instant updates.
+            </p>
+
+            <div class="space-y-6">
+                <!-- Simulation Trigger Tool -->
+                <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700/50">
+                    <h3 class="text-slate-200 font-medium text-xs uppercase tracking-wider mb-3">Simulate Voice Commands</h3>
+                    <div class="space-y-2">
+                        <button onclick="simulateVoice('Had a meltdown after lunch')" class="w-full text-left bg-slate-800 hover:bg-slate-700 text-slate-200 p-2.5 rounded text-xs transition duration-150 border border-slate-700 flex justify-between items-center">
+                            <span>"Had a meltdown after lunch"</span>
+                            <span class="text-[10px] text-blue-400 bg-blue-900/50 px-1.5 py-0.5 rounded">Try it</span>
+                        </button>
+                        <button onclick="simulateVoice('Aarav took medication at 2 PM')" class="w-full text-left bg-slate-800 hover:bg-slate-700 text-slate-200 p-2.5 rounded text-xs transition duration-150 border border-slate-700 flex justify-between items-center">
+                            <span>"Took medication at 2 PM"</span>
+                            <span class="text-[10px] text-blue-400 bg-blue-900/50 px-1.5 py-0.5 rounded">Try it</span>
+                        </button>
+                        <button onclick="simulateVoice('Refused lunch but ate a snack')" class="w-full text-left bg-slate-800 hover:bg-slate-700 text-slate-200 p-2.5 rounded text-xs transition duration-150 border border-slate-700 flex justify-between items-center">
+                            <span>"Refused lunch but ate snack"</span>
+                            <span class="text-[10px] text-blue-400 bg-blue-900/50 px-1.5 py-0.5 rounded">Try it</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Live Diagnostics -->
+                <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700/50">
+                    <h3 class="text-slate-200 font-medium text-xs uppercase tracking-wider mb-2">Active Child Session</h3>
+                    <div class="flex items-center space-x-2 text-sm text-slate-300">
+                        <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></span>
+                        <span>Logging data to client storage</span>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-slate-800 text-xs text-slate-400">
+                        Total items saved: <span id="desktop-total-count" class="text-white font-mono">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-xs text-slate-500 border-t border-slate-700 pt-4">
+            Designed for stress-free logging.
+        </div>
+    </div>
+
+    <!-- Main Mobile Frame Container -->
+    <div class="flex-1 flex flex-col items-center justify-center bg-slate-900 p-0 sm:p-4 md:p-8 overflow-y-auto">
+        <!-- Phone Frame Wrapper -->
+        <div class="relative w-full max-w-md h-full sm:h-[840px] bg-slate-950 sm:rounded-[40px] shadow-2xl overflow-hidden flex flex-col border border-slate-800">
+            <!-- Simulated Top Notch / Speaker Bar for real mobile feel on desktop -->
+            <div class="hidden sm:flex justify-between items-center px-8 pt-3 pb-1 text-slate-400 text-xs select-none">
+                <span>9:41 AM</span>
+                <div class="w-24 h-4 bg-slate-900 rounded-full border border-slate-800"></div>
+                <div class="flex items-center space-x-1">
+                    <span>5G</span>
+                    <div class="w-5 h-2.5 border border-slate-400 rounded-sm p-0.5 flex items-center">
+                        <div class="w-full h-full bg-slate-400 rounded-2xs"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toast alert layer (Top of Phone App) -->
+            <div id="toast-container" class="absolute top-12 left-0 right-0 z-50 px-4 pointer-events-none transition-all duration-300 transform -translate-y-10 opacity-0">
+                <div class="bg-slate-900 text-white text-sm px-4 py-3 rounded-xl shadow-lg flex items-center justify-between border border-slate-700">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span id="toast-text">Logged successfully</span>
+                    </div>
+                    <span class="text-xs text-slate-400" id="toast-time">Now</span>
+                </div>
+            </div>
+
+            <!-- Screen Viewport Container -->
+            <div class="flex-1 overflow-y-auto bg-slate-50 relative flex flex-col no-scrollbar">
+                
+                <!-- ================== WIREFRAME 1: HOME ================== -->
+                <div id="screen-home" class="flex-1 flex flex-col">
+                    <!-- Top Action Bar -->
+                    <div class="px-5 py-4 flex items-center justify-between border-b border-slate-200/60 bg-white sticky top-0 z-10 shadow-sm">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Child:</span>
+                            <div class="relative">
+                                <select id="child-selector" onchange="changeChild(this.value)" class="appearance-none bg-slate-100 border-none font-bold text-slate-800 text-base py-1 pl-3 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="Aarav">Aarav</option>
+                                    <option value="Maya">Maya</option>
+                                    <option value="Liam">Liam</option>
+                                </select>
+                                <div class="absolute right-2 top-2.5 pointer-events-none text-slate-500">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-1 bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full text-xs font-semibold">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            <span>Stored locally</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Screen Scrollable Area -->
+                    <div class="px-5 py-4 space-y-6 flex-1">
+                        <!-- Giant Voice centerpiece -->
+                        <div class="flex flex-col items-center justify-center py-6 bg-gradient-to-b from-white to-slate-100 rounded-2xl border border-slate-200/50 shadow-sm relative overflow-hidden">
+                            <div class="absolute top-2 right-3 text-[10px] text-slate-400 font-medium">VOICE CAPTURE</div>
+                            
+                            <!-- Large Circular Microphone Button -->
+                            <button id="voice-btn" 
+                                    onmousedown="startVoiceRecording()" 
+                                    onmouseup="stopVoiceRecording()" 
+                                    ontouchstart="startVoiceRecording(event)" 
+                                    ontouchend="stopVoiceRecording(event)"
+                                    class="w-32 h-32 rounded-full bg-blue-600 hover:bg-blue-700 flex flex-col items-center justify-center text-white shadow-xl transition-all duration-150 transform active:scale-95 focus:outline-none relative z-10">
+                                <span id="voice-pulse" class="absolute inset-0 w-full h-full rounded-full bg-blue-500 opacity-0 transition-all duration-300"></span>
+                                <svg class="w-12 h-12 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                                </svg>
+                                <span class="text-xs font-bold uppercase mt-2 relative z-10 tracking-wider">Hold to speak</span>
+                            </button>
+
+                            <!-- Live Waveform Simulation -->
+                            <div id="voice-status" class="mt-4 text-center">
+                                <p class="text-sm font-semibold text-slate-500">Press and hold to log event quickly</p>
+                                <p class="text-xs text-slate-400 mt-1 max-w-xs px-4">"Had a meltdown after lunch" or "Took daily medication"</p>
+                            </div>
+
+                            <div id="voice-wave" class="hidden flex items-center space-x-1.5 h-6 mt-4">
+                                <span class="w-1 bg-blue-500 rounded-full h-3 animate-pulse"></span>
+                                <span class="w-1 bg-blue-500 rounded-full h-5 animate-pulse" style="animation-delay: 0.1s"></span>
+                                <span class="w-1 bg-blue-600 rounded-full h-6 animate-pulse" style="animation-delay: 0.2s"></span>
+                                <span class="w-1 bg-blue-500 rounded-full h-4 animate-pulse" style="animation-delay: 0.3s"></span>
+                                <span class="w-1 bg-blue-500 rounded-full h-2 animate-pulse" style="animation-delay: 0.4s"></span>
+                            </div>
+                        </div>
+
+                        <!-- 1-Touch Quick Tags Section -->
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-bold text-slate-800 text-sm tracking-wide uppercase">Quick 1-Touch Tags</h3>
+                                <span class="text-xs text-slate-400">Tap instantly saves</span>
+                            </div>
+
+                            <!-- Behavior Grid -->
+                            <div class="space-y-2">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wide">Behavior</span>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button onclick="logQuickTag('Behavior', 'Meltdown', '🔴')" class="flex flex-col items-center bg-white border border-slate-200 rounded-xl p-3 text-center hover:border-red-300 hover:bg-red-50/20 active:bg-slate-100 transition duration-150 group">
+                                        <span class="text-lg">🔴</span>
+                                        <span class="text-xs font-medium text-slate-700 mt-1">Meltdown</span>
+                                    </button>
+                                    <button onclick="logQuickTag('Behavior', 'Calm', '🟢')" class="flex flex-col items-center bg-white border border-slate-200 rounded-xl p-3 text-center hover:border-emerald-300 hover:bg-emerald-50/20 active:bg-slate-100 transition duration-150">
+                                        <span class="text-lg">🟢</span>
+                                        <span class="text-xs font-medium text-slate-700 mt-1">Calm</span>
+                                    </button>
+                                    <button onclick="logQuickTag('Behavior', 'Aggressive', '⚡')" class="flex flex-col items-center bg-white border border-slate-200 rounded-xl p-3 text-center hover:border-amber-300 hover:bg-amber-50/20 active:bg-slate-100 transition duration-150">
+                                        <span class="text-lg">⚡</span>
+                                        <span class="text-xs font-medium text-slate-700 mt-1">Aggressive</span>
+                                    </button>
+                                    <button onclick="logQuickTag('Behavior', 'Focused', '🎯')" class="flex flex-col items-center bg-white border border-slate-200 rounded-xl p-3 text-center hover:border-blue-300 hover:bg-blue-50/20 active:bg-slate-100 transition duration-150">
+                                        <span class="text-lg">🎯</span>
+                                        <span class="text-xs font-medium text-slate-700 mt-1">Focused</span>
+                                    </button>
+                                    <button onclick="logQuickTag('Behavior', 'Stim', '🌀')" class="flex flex-col items-center bg-white border border-slate-200 rounded-xl p-3 text-center hover:border-purple-300 hover:bg-purple-50/20 active:bg-slate-100 transition duration-150">
+                                        <span class="text-lg">🌀</span>
+                                        <span class="text-xs font-medium text-slate-700 mt-1">Stim</span>
+                                    </button>
+                                    <button onclick="logQuickTag('Behavior', 'Anxious', '😟')" class="flex flex-col items-center bg-white border border-slate-200 rounded-xl p-3 text-center hover:border-indigo-300 hover:bg-indigo-50/20 active:bg-slate-100 transition duration-150">
+                                        <span class="text-lg">😟</span>
+                                        <span class="text-xs font-medium text-slate-700 mt-1">Anxious</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Food Section -->
+                            <div class="space-y-2 pt-2">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wide">Food & Diet</span>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="logQuickTag('Food', 'Ate Well', '🍽️')" class="flex items-center space-x-3 bg-white border border-slate-200 rounded-xl p-3 hover:border-emerald-300 hover:bg-emerald-50/20 active:bg-slate-100 transition duration-150">
+                                        <span class="text-xl">🍽️</span>
+                                        <span class="text-xs font-medium text-slate-700">Ate well</span>
+                                    </button>
+                                    <button onclick="logQuickTag('Food', 'Refused food', '🙅‍♂️')" class="flex items-center space-x-3 bg-white border border-slate-200 rounded-xl p-3 hover:border-red-300 hover:bg-red-50/20 active:bg-slate-100 transition duration-150">
+                                        <span class="text-xl">🙅‍♂️</span>
+                                        <span class="text-xs font-medium text-slate-700">Refused food</span>
+                                    </button>
+                                    <button onclick="logQuickTag('Food', 'Dairy Intake', '🥛')" class="flex items-center space-x-3 bg-white border border-slate-200 rounded-xl p-3 hover:border-amber-300 hover:bg-amber-50/20 active:bg-slate-100 transition duration-150">
+                                        <span class="text-xl">🥛</span>
+                                        <span class="text-xs font-medium text-slate-700">Dairy</span>
+                                    </button>
+                                    <button onclick="logQuickTag('Food', 'Sugar Intake', '🍭')" class="flex items-center space-x-3 bg-white border border-slate-200 rounded-xl p-3 hover:border-purple-300 hover:bg-purple-50/20 active:bg-slate-100 transition duration-150">
+                                        <span class="text-xl">🍭</span>
+                                        <span class="text-xs font-medium text-slate-700">Sugar</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Medication Section -->
+                            <div class="space-y-2 pt-2">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wide">Medication</span>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button onclick="logQuickTag('Medication', 'Taken', '💊')" class="flex flex-col items-center bg-white border border-slate-200 rounded-xl p-2.5 text-center hover:border-emerald-300 hover:bg-emerald-50/20 active:bg-slate-100 transition duration-150">
+                                        <span class="text-lg">💊</span>
+                                        <span class="text-[11px] font-medium text-slate-700 mt-1">Taken</span>
+                                    </button>
+                                    <button onclick="logQuickTag('Medication', 'Missed', '❌')" class="flex flex-col items-center bg-white border border-slate-200 rounded-xl p-2.5 text-center hover:border-red-300 hover:bg-red-50/20 active:bg-slate-100 transition duration-150">
+                                        <span class="text-lg">❌</span>
+                                        <span class="text-[11px] font-medium text-slate-700 mt-1">Missed</span>
+                                    </button>
+                                    <button onclick="logQuickTag('Medication', 'Side effect', '⚠️')" class="flex flex-col items-center bg-white border border-slate-200 rounded-xl p-2.5 text-center hover:border-amber-300 hover:bg-amber-50/20 active:bg-slate-100 transition duration-150">
+                                        <span class="text-lg">⚠️</span>
+                                        <span class="text-[11px] font-medium text-slate-700 mt-1">Side effect</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Emotion Section -->
+                            <div class="space-y-2 pt-2">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wide">Emotion</span>
+                                <div class="grid grid-cols-4 gap-2">
+                                    <button onclick="logQuickTag('Emotion', 'Happy', '😊')" class="flex flex-col items-center bg-white border border-slate-200 rounded-xl p-2 text-center hover:border-emerald-300 hover:bg-emerald-50/20 active:bg-slate-100 transition duration-150">
+                                        <span class="text-lg">😊</span>
+                                        <span class="text-[10px] font-medium text-slate-700 mt-1">Happy</span>
+                                    </button>
+                                    <button onclick="logQuickTag('Emotion', 'Irritated', '😒')" class="flex flex-col items-center bg-white border border-slate-200 rounded-xl p-2 text-center hover:border-amber-300 hover:bg-amber-50/20 active:bg-slate-100 transition duration-150">
+                                        <span class="text-lg">😒</span>
+                                        <span class="text-[10px] font-medium text-slate-700 mt-1">Irritated</span>
+                                    </button>
+                                    <button onclick="logQuickTag('Emotion', 'Tired', '🥱')" class="flex flex-col items-center bg-white border border-slate-200 rounded-xl p-2 text-center hover:border-blue-300 hover:bg-blue-50/20 active:bg-slate-100 transition duration-150">
+                                        <span class="text-lg">🥱</span>
+                                        <span class="text-[10px] font-medium text-slate-700 mt-1">Tired</span>
+                                    </button>
+                                    <button onclick="logQuickTag('Emotion', 'Overwhelmed', '🤯')" class="flex flex-col items-center bg-white border border-slate-200 rounded-xl p-2 text-center hover:border-red-300 hover:bg-red-50/20 active:bg-slate-100 transition duration-150">
+                                        <span class="text-lg">🤯</span>
+                                        <span class="text-[10px] font-medium text-slate-700 mt-1">Overload</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Spacer so bottom nav doesn't clip content -->
+                        <div class="h-24"></div>
+                    </div>
+                </div>
+
+                <!-- ================== WIREFRAME 2: RAPID INCIDENT LOGGING ================== -->
+                <div id="screen-incident" class="hidden flex-1 flex flex-col">
+                    <!-- Top Action Bar -->
+                    <div class="px-5 py-4 flex items-center justify-between border-b border-slate-200/60 bg-white sticky top-0 z-10 shadow-sm">
+                        <div class="flex items-center space-x-3">
+                            <button onclick="switchTab('home')" class="text-slate-400 hover:text-slate-600">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
+                            </button>
+                            <div>
+                                <h2 class="text-base font-bold text-slate-800">Log Incident</h2>
+                                <p class="text-xs text-slate-400">Today • <span id="incident-timestamp">3:42 PM</span></p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold text-red-600 bg-red-50 px-2.5 py-1 rounded-full uppercase tracking-wider">Stress mode</span>
+                    </div>
+
+                    <!-- Main Incident Logging Form -->
+                    <div class="px-5 py-4 space-y-6 flex-1">
+                        <!-- Section 1: What Happened? -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Section 1 — What Happened? <span class="text-red-500">*</span></label>
+                            <div class="flex flex-wrap gap-2" id="incident-type-group">
+                                <button type="button" onclick="togglePill(this)" class="px-3.5 py-2 rounded-full border border-slate-200 bg-white text-slate-700 font-medium text-sm hover:border-slate-300 transition focus:outline-none">Meltdown</button>
+                                <button type="button" onclick="togglePill(this)" class="px-3.5 py-2 rounded-full border border-slate-200 bg-white text-slate-700 font-medium text-sm hover:border-slate-300 transition focus:outline-none">Aggression</button>
+                                <button type="button" onclick="togglePill(this)" class="px-3.5 py-2 rounded-full border border-slate-200 bg-white text-slate-700 font-medium text-sm hover:border-slate-300 transition focus:outline-none">Shutdown</button>
+                                <button type="button" onclick="togglePill(this)" class="px-3.5 py-2 rounded-full border border-slate-200 bg-white text-slate-700 font-medium text-sm hover:border-slate-300 transition focus:outline-none">Crying</button>
+                                <button type="button" onclick="togglePill(this)" class="px-3.5 py-2 rounded-full border border-slate-200 bg-white text-slate-700 font-medium text-sm hover:border-slate-300 transition focus:outline-none">Eloping</button>
+                                <button type="button" onclick="togglePill(this)" class="px-3.5 py-2 rounded-full border border-slate-200 bg-white text-slate-700 font-medium text-sm hover:border-slate-300 transition focus:outline-none">Sensory overload</button>
+                                <button type="button" onclick="togglePill(this)" class="px-3.5 py-2 rounded-full border border-slate-200 bg-white text-slate-700 font-medium text-sm hover:border-slate-300 transition focus:outline-none">Self-harm</button>
+                                <button type="button" onclick="togglePill(this)" class="px-3.5 py-2 rounded-full border border-slate-200 bg-white text-slate-700 font-medium text-sm hover:border-slate-300 transition focus:outline-none">Sleep issue</button>
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Severity Slider -->
+                        <div class="space-y-3">
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Section 2 — Severity Slider</label>
+                            <div class="bg-white border border-slate-200 rounded-xl p-4">
+                                <div class="flex justify-between text-xs font-bold text-slate-400 uppercase mb-2">
+                                    <span id="label-mild" class="text-emerald-500">Mild</span>
+                                    <span id="label-moderate" class="text-slate-400">Moderate</span>
+                                    <span id="label-severe" class="text-slate-400">Severe</span>
+                                </div>
+                                <input type="range" id="incident-severity" min="1" max="3" value="1" oninput="updateSeverityDisplay(this.value)" class="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600 focus:outline-none">
+                                <div class="mt-2 text-center text-xs text-slate-500 italic">
+                                    Current Choice: <span id="severity-desc" class="font-bold text-slate-700">Mild</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 3: Possible Triggers -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Section 3 — Possible Triggers</label>
+                            <div class="flex flex-wrap gap-2" id="trigger-group">
+                                <button type="button" onclick="togglePill(this, 'trigger')" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium text-xs hover:border-slate-300 transition focus:outline-none">Noise</button>
+                                <button type="button" onclick="togglePill(this, 'trigger')" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium text-xs hover:border-slate-300 transition focus:outline-none">Hunger</button>
+                                <button type="button" onclick="togglePill(this, 'trigger')" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium text-xs hover:border-slate-300 transition focus:outline-none">Transition</button>
+                                <button type="button" onclick="togglePill(this, 'trigger')" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium text-xs hover:border-slate-300 transition focus:outline-none">School</button>
+                                <button type="button" onclick="togglePill(this, 'trigger')" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium text-xs hover:border-slate-300 transition focus:outline-none">Medication</button>
+                                <button type="button" onclick="togglePill(this, 'trigger')" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium text-xs hover:border-slate-300 transition focus:outline-none">Screen time</button>
+                                <button type="button" onclick="togglePill(this, 'trigger')" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium text-xs hover:border-slate-300 transition focus:outline-none">Social situation</button>
+                                <button type="button" onclick="togglePill(this, 'trigger')" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium text-xs hover:border-slate-300 transition focus:outline-none">Unknown</button>
+                            </div>
+                        </div>
+
+                        <!-- Section 4: Quick Notes -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Section 4 — Quick Notes (Optional)</label>
+                            <div class="relative bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-blue-500">
+                                <textarea id="incident-note" placeholder="Type a quick 1-line note here..." rows="2" class="w-full p-3 text-sm text-slate-700 border-none focus:outline-none resize-none"></textarea>
+                                <div class="bg-slate-50 px-3 py-2 border-t border-slate-100 flex justify-between items-center">
+                                    <span class="text-xs text-slate-400">One-handed typing friendly</span>
+                                    <button type="button" onclick="simulateIncidentVoice()" class="flex items-center space-x-1 text-xs text-blue-600 hover:text-blue-700 font-semibold focus:outline-none">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                                        <span>Voice Note</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sticky bottom action buttons inside wireframe page content -->
+                        <div class="grid grid-cols-2 gap-3 pt-4">
+                            <button type="button" onclick="saveIncidentForm(false)" class="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-3 px-4 rounded-xl text-sm transition focus:outline-none shadow-md">
+                                Save Incident
+                            </button>
+                            <button type="button" onclick="saveIncidentForm(true)" class="bg-slate-800 hover:bg-slate-700 active:bg-slate-900 text-white font-bold py-3 px-4 rounded-xl text-sm transition focus:outline-none shadow-md flex items-center justify-center space-x-1">
+                                <span>Save & Remind</span>
+                            </button>
+                        </div>
+
+                        <!-- Spacer so bottom nav doesn't clip content -->
+                        <div class="h-28"></div>
+                    </div>
+                </div>
+
+                <!-- ================== WIREFRAME 3: DAILY OVERVIEW DASHBOARD ================== -->
+                <div id="screen-dashboard" class="hidden flex-1 flex flex-col">
+                    <!-- Top Summary Card Area -->
+                    <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white px-5 py-6 shadow-md relative">
+                        <div class="absolute top-2 right-3 text-[10px] text-slate-400 font-bold tracking-wider">DAILY OVERVIEW</div>
+                        <div class="space-y-1">
+                            <p class="text-xs text-slate-400 uppercase font-semibold">Dashboard</p>
+                            <h2 class="text-xl font-bold tracking-tight">Today with <span class="active-child-name">Aarav</span></h2>
+                        </div>
+
+                        <!-- Mini Summary Counters -->
+                        <div class="grid grid-cols-4 gap-2 mt-5">
+                            <div class="bg-white/10 p-2 rounded-xl text-center">
+                                <p class="text-[10px] text-slate-300">Sleep</p>
+                                <p class="text-sm font-extrabold mt-0.5" id="sum-sleep">6 hrs</p>
+                            </div>
+                            <div class="bg-white/10 p-2 rounded-xl text-center">
+                                <p class="text-[10px] text-slate-300">Meals</p>
+                                <p class="text-sm font-extrabold mt-0.5" id="sum-meals">0</p>
+                            </div>
+                            <div class="bg-white/10 p-2 rounded-xl text-center">
+                                <p class="text-[10px] text-slate-300">Meds</p>
+                                <p class="text-sm font-extrabold mt-0.5" id="sum-meds">0</p>
+                            </div>
+                            <div class="bg-white/10 p-2 rounded-xl text-center">
+                                <p class="text-[10px] text-slate-300">Incidents</p>
+                                <p class="text-sm font-extrabold mt-0.5 text-rose-300" id="sum-incidents">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scrollable Dashboard Content -->
+                    <div class="px-5 py-4 space-y-6 flex-1">
+                        <!-- Reflection widget -->
+                        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wide">One-Tap Reflection</p>
+                            <p class="text-sm font-semibold text-slate-700">How did today feel overall?</p>
+                            <div class="grid grid-cols-3 gap-2" id="reflection-options">
+                                <button onclick="selectReflection('Better than usual', this)" class="py-2.5 px-1 border border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/20 rounded-xl text-xs font-semibold text-slate-700 transition">Better</button>
+                                <button onclick="selectReflection('Typical', this)" class="py-2.5 px-1 border border-slate-200 hover:border-slate-300 hover:bg-slate-50 rounded-xl text-xs font-semibold text-slate-700 transition">Typical</button>
+                                <button onclick="selectReflection('Difficult', this)" class="py-2.5 px-1 border border-slate-200 hover:border-red-300 hover:bg-red-50/20 rounded-xl text-xs font-semibold text-slate-700 transition">Difficult</button>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Feed -->
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-bold text-slate-800 text-sm tracking-wide uppercase">Today's Timeline</h3>
+                                <button onclick="clearTimeline()" class="text-xs text-slate-400 hover:text-slate-600 flex items-center space-x-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    <span>Reset Logs</span>
+                                </button>
+                            </div>
+
+                            <!-- List of dynamically generated Cards -->
+                            <div id="timeline-list" class="space-y-2">
+                                <!-- Initial state if no logs -->
+                                <div id="timeline-empty-state" class="text-center py-8 bg-slate-100/50 rounded-xl border-2 border-dashed border-slate-200">
+                                    <p class="text-sm text-slate-400">No events logged today yet.</p>
+                                    <p class="text-xs text-slate-400 mt-1">Tap quick tags on Home screen to populate.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Simple Insights Widget (Value feedback) -->
+                        <div class="bg-amber-50 border border-amber-100 rounded-xl p-4 shadow-sm space-y-2">
+                            <p class="text-xs font-bold text-amber-800 uppercase tracking-wide flex items-center space-x-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                                <span>Patterns Observed</span>
+                            </p>
+                            <ul class="text-xs text-amber-900/90 space-y-1.5 list-disc pl-4" id="insights-list">
+                                <li>Meltdowns were more common on low-sleep days this week</li>
+                                <li>Focus improved after earlier medication timing</li>
+                            </ul>
+                        </div>
+
+                        <!-- Bottom CTA to log something -->
+                        <div class="pt-2">
+                            <button onclick="switchTab('home')" class="w-full bg-slate-800 text-white font-bold py-3 px-4 rounded-xl text-sm transition hover:bg-slate-700 active:bg-slate-900 shadow-md">
+                                Log Something Else
+                            </button>
+                        </div>
+
+                        <!-- Spacer so bottom nav doesn't clip content -->
+                        <div class="h-28"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Global Float Action Button for stress logging (always clickable) -->
+            <div class="absolute bottom-20 right-4 z-20">
+                <button onclick="switchTab('incident')" class="w-14 h-14 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-all duration-150 transform active:scale-95 focus:outline-none">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </button>
+            </div>
+
+            <!-- ================== BOTTOM NAVIGATION BAR ================== -->
+            <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-4 py-2 flex justify-between items-center z-30 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
+                <!-- Tab: Home -->
+                <button id="nav-home" onclick="switchTab('home')" class="flex flex-col items-center justify-center flex-1 py-1 text-blue-600 font-semibold transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    <span class="text-[10px] mt-1">Home</span>
+                </button>
+                
+                <!-- Tab: Timeline / Dashboard -->
+                <button id="nav-dashboard" onclick="switchTab('dashboard')" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-400 hover:text-slate-600 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    <span class="text-[10px] mt-1">Timeline</span>
+                </button>
+
+                <!-- Spacer for physical center overlay layout -->
+                <div class="w-12"></div>
+
+                <!-- Tab: Insights -->
+                <button id="nav-insights" onclick="triggerMockAlert('Insights panel', 'Summary analytics and behavior trend charts will display here.')" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-400 hover:text-slate-600 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    <span class="text-[10px] mt-1">Insights</span>
+                </button>
+
+                <!-- Tab: Settings -->
+                <button id="nav-settings" onclick="triggerMockAlert('Settings panel', 'Manage notification triggers, child profiles, and backup storage.')" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-400 hover:text-slate-600 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <span class="text-[10px] mt-1">Settings</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customized Modal overlay to handle browser prompt styling -->
+    <div id="custom-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl space-y-4">
+            <h3 class="font-bold text-slate-800 text-lg" id="modal-title">Prototype Alert</h3>
+            <p class="text-slate-600 text-sm" id="modal-desc">This function is simulated in the wireframe prototype.</p>
+            <div class="flex justify-end">
+                <button onclick="closeModal()" class="bg-blue-600 text-white font-semibold text-sm px-5 py-2 rounded-xl hover:bg-blue-700 transition focus:outline-none">
+                    Got it
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application State Core JavaScript Logic -->
+    <script>
+        // Database simulation
+        let logsState = [];
+        let activeChild = "Aarav";
+        let holdsActive = false;
+        let voiceTimeout = null;
+
+        // Sync visual labels
+        function changeChild(name) {
+            activeChild = name;
+            document.querySelectorAll(".active-child-name").forEach(el => {
+                el.textContent = name;
+            });
+            showToast("Switched child profile to " + name, "Now");
+            updateDashboardView();
+        }
+
+        // Switching visual Screens
+        function switchTab(screenId) {
+            // Hide all tabs
+            document.getElementById('screen-home').classList.add('hidden');
+            document.getElementById('screen-incident').classList.add('hidden');
+            document.getElementById('screen-dashboard').classList.add('hidden');
+
+            // Show selected screen
+            document.getElementById('screen-' + screenId).classList.remove('hidden');
+
+            // Set tab indicators active
+            const navHome = document.getElementById('nav-home');
+            const navDashboard = document.getElementById('nav-dashboard');
+
+            // Reset active states
+            navHome.className = "flex flex-col items-center justify-center flex-1 py-1 text-slate-400 hover:text-slate-600 transition";
+            navDashboard.className = "flex flex-col items-center justify-center flex-1 py-1 text-slate-400 hover:text-slate-600 transition";
+
+            if (screenId === 'home') {
+                navHome.className = "flex flex-col items-center justify-center flex-1 py-1 text-blue-600 font-semibold transition";
+            } else if (screenId === 'dashboard') {
+                navDashboard.className = "flex flex-col items-center justify-center flex-1 py-1 text-blue-600 font-semibold transition";
+            } else if (screenId === 'incident') {
+                // Populate current time automatically
+                const now = new Date();
+                let hrs = now.getHours();
+                const mins = String(now.getMinutes()).padStart(2, '0');
+                const ampm = hrs >= 12 ? 'PM' : 'AM';
+                hrs = hrs % 12;
+                hrs = hrs ? hrs : 12;
+                document.getElementById('incident-timestamp').textContent = hrs + ":" + mins + " " + ampm;
+            }
+        }
+
+        // Voice simulator handlers
+        function startVoiceRecording(event) {
+            if (event) {
+                event.preventDefault(); // Prevent text highlights on mobile touch hold
+            }
+            holdsActive = true;
+            document.getElementById('voice-pulse').className = "absolute inset-0 w-full h-full rounded-full bg-blue-500 opacity-30 animate-ping";
+            document.getElementById('voice-status').classList.add('hidden');
+            document.getElementById('voice-wave').classList.remove('hidden');
+            
+            // Auto complete if held for 1.8 seconds as mock speech detection
+            voiceTimeout = setTimeout(() => {
+                if (holdsActive) {
+                    stopVoiceRecording();
+                    simulateVoice("Aarav slept well and took morning medication");
+                }
+            }, 1800);
+        }
+
+        function stopVoiceRecording(event) {
+            if (event) {
+                event.preventDefault();
+            }
+            holdsActive = false;
+            clearTimeout(voiceTimeout);
+            document.getElementById('voice-pulse').className = "absolute inset-0 w-full h-full rounded-full bg-blue-500 opacity-0 transition-all duration-300";
+            document.getElementById('voice-status').classList.remove('hidden');
+            document.getElementById('voice-wave').classList.add('hidden');
+        }
+
+        // Voice text interpreter mock-up
+        function simulateVoice(phrase) {
+            const timeStr = getFormattedTime();
+            let parsedCategory = "General";
+            let parsedEmoji = "🎙️";
+            let parsedLabel = phrase;
+
+            if (phrase.toLowerCase().includes("meltdown") || phrase.toLowerCase().includes("behavior")) {
+                parsedCategory = "Behavior";
+                parsedEmoji = "🔴";
+                parsedLabel = "Meltdown (from voice)";
+            } else if (phrase.toLowerCase().includes("medication") || phrase.toLowerCase().includes("pill") || phrase.toLowerCase().includes("took")) {
+                parsedCategory = "Medication";
+                parsedEmoji = "💊";
+                parsedLabel = "Medication Taken (from voice)";
+            } else if (phrase.toLowerCase().includes("refused") || phrase.toLowerCase().includes("lunch") || phrase.toLowerCase().includes("eat")) {
+                parsedCategory = "Food";
+                parsedEmoji = "🙅‍♂️";
+                parsedLabel = "Refused lunch (from voice)";
+            }
+
+            const item = {
+                id: Date.now(),
+                child: activeChild,
+                category: parsedCategory,
+                label: parsedLabel,
+                emoji: parsedEmoji,
+                time: timeStr,
+                details: phrase
+            };
+
+            logsState.unshift(item);
+            showToast(`Voice logged: "${phrase}"`, timeStr);
+            updateDashboardView();
+        }
+
+        // 1-Touch Tag logger core logic
+        function logQuickTag(category, name, emoji) {
+            const timeStr = getFormattedTime();
+            const item = {
+                id: Date.now(),
+                child: activeChild,
+                category: category,
+                label: name,
+                emoji: emoji,
+                time: timeStr,
+                details: "Quick Logged"
+            };
+
+            logsState.unshift(item);
+            showToast(`${activeChild}: ${name} saved`, "Now");
+            updateDashboardView();
+        }
+
+        // Help utils
+        function getFormattedTime() {
+            const now = new Date();
+            let hrs = now.getHours();
+            const mins = String(now.getMinutes()).padStart(2, '0');
+            const ampm = hrs >= 12 ? 'PM' : 'AM';
+            hrs = hrs % 12;
+            hrs = hrs ? hrs : 12;
+            return `${hrs}:${mins} ${ampm}`;
+        }
+
+        // Notification system
+        function showToast(text, time) {
+            const container = document.getElementById('toast-container');
+            document.getElementById('toast-text').textContent = text;
+            document.getElementById('toast-time').textContent = time;
+
+            container.classList.remove('opacity-0', '-translate-y-10');
+            container.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                container.classList.remove('opacity-100', 'translate-y-0');
+                container.classList.add('opacity-0', '-translate-y-10');
+            }, 2500);
+        }
+
+        // Toggle tag/pills selections in wireframe forms
+        function togglePill(button, context = 'default') {
+            if (context === 'trigger') {
+                button.classList.toggle('bg-amber-100');
+                button.classList.toggle('border-amber-400');
+                button.classList.toggle('text-amber-900');
+            } else {
+                button.classList.toggle('bg-blue-50');
+                button.classList.toggle('border-blue-500');
+                button.classList.toggle('text-blue-700');
+            }
+        }
+
+        // Severity visual updates
+        function updateSeverityDisplay(val) {
+            const labelMild = document.getElementById('label-mild');
+            const labelMod = document.getElementById('label-moderate');
+            const labelSev = document.getElementById('label-severe');
+            const desc = document.getElementById('severity-desc');
+
+            labelMild.className = "text-slate-400";
+            labelMod.className = "text-slate-400";
+            labelSev.className = "text-slate-400";
+
+            if (val == 1) {
+                labelMild.className = "text-emerald-500 font-bold";
+                desc.textContent = "Mild";
+            } else if (val == 2) {
+                labelMod.className = "text-amber-500 font-bold";
+                desc.textContent = "Moderate";
+            } else {
+                labelSev.className = "text-red-500 font-bold";
+                desc.textContent = "Severe";
+            }
+        }
+
+        // Voice note capture simulator inside incident page
+        function simulateIncidentVoice() {
+            document.getElementById('incident-note').value = "Began throwing toys when transition from ipad started.";
+            showToast("Speech recognized into note", "Now");
+        }
+
+        // Save incident structure
+        function saveIncidentForm(addReminder) {
+            // Find active selected pills in what happened section
+            const selectedHappened = Array.from(document.querySelectorAll('#incident-type-group .border-blue-500'))
+                .map(btn => btn.textContent.trim());
+
+            if (selectedHappened.length === 0) {
+                // Flash validation warning without browser alerts
+                showToast("Please select what happened first", "Now");
+                return;
+            }
+
+            // Find triggers
+            const selectedTriggers = Array.from(document.querySelectorAll('#trigger-group .border-amber-400'))
+                .map(btn => btn.textContent.trim());
+
+            const severityValue = document.getElementById('severity-desc').textContent;
+            const textNote = document.getElementById('incident-note').value;
+            const timeStr = getFormattedTime();
+
+            const description = `${selectedHappened.join(', ')} (Severity: ${severityValue})${selectedTriggers.length > 0 ? '. Triggers: ' + selectedTriggers.join(', ') : ''}`;
+
+            const item = {
+                id: Date.now(),
+                child: activeChild,
+                category: "Behavior",
+                label: selectedHappened,
+                emoji: "⚠️",
+                time: timeStr,
+                details: description + (textNote ? ` - Note: ${textNote}` : '')
+            };
+
+            logsState.unshift(item);
+            
+            // Build confirmation string
+            let alertMsg = `Incident logged under ${activeChild}`;
+            if (addReminder) {
+                alertMsg += " • Reminder active for 30 min";
+            }
+
+            showToast(alertMsg, "Now");
+
+            // Reset form fields
+            document.querySelectorAll('#incident-type-group button').forEach(btn => {
+                btn.className = "px-3.5 py-2 rounded-full border border-slate-200 bg-white text-slate-700 font-medium text-sm hover:border-slate-300 transition focus:outline-none";
+            });
+            document.querySelectorAll('#trigger-group button').forEach(btn => {
+                btn.className = "px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium text-xs hover:border-slate-300 transition focus:outline-none";
+            });
+            document.getElementById('incident-severity').value = 1;
+            updateSeverityDisplay(1);
+            document.getElementById('incident-note').value = "";
+
+            updateDashboardView();
+            switchTab('dashboard');
+        }
+
+        // Reflection choices
+        function selectReflection(feeling, button) {
+            // Remove active style from sibling reflection options
+            document.querySelectorAll('#reflection-options button').forEach(btn => {
+                btn.className = "py-2.5 px-1 border border-slate-200 hover:border-slate-300 rounded-xl text-xs font-semibold text-slate-700 transition";
+            });
+
+            button.className = "py-2.5 px-1 border-2 border-blue-600 bg-blue-50/50 rounded-xl text-xs font-bold text-blue-700 transition";
+            showToast(`Reflection captured: "${feeling}"`, "Now");
+        }
+
+        // Clear local simulation logs
+        function clearTimeline() {
+            logsState = [];
+            updateDashboardView();
+            showToast("Timeline reset successfully", "Now");
+        }
+
+        // Render functions updating dashboard metrics and layout dynamically
+        function updateDashboardView() {
+            // Filter logs to the current selected child
+            const childLogs = logsState.filter(log => log.child === activeChild);
+
+            // Compute counts
+            const mealsCount = childLogs.filter(log => log.category === 'Food').length;
+            const medsCount = childLogs.filter(log => log.category === 'Medication').length;
+            const incidentCount = childLogs.filter(log => log.category === 'Behavior' && (log.emoji === '🔴' || log.emoji === '⚡' || log.emoji === '⚠️' || log.emoji === '🤯')).length;
+
+            document.getElementById('sum-meals').textContent = mealsCount;
+            document.getElementById('sum-meds').textContent = medsCount;
+            document.getElementById('sum-incidents').textContent = incidentCount;
+
+            // Diagnostic sync for helper panel
+            document.getElementById('desktop-total-count').textContent = logsState.length;
+
+            // Dynamic Timeline feed rendering
+            const timelineList = document.getElementById('timeline-list');
+            const emptyState = document.getElementById('timeline-empty-state');
+
+            // Clear previous timeline items
+            const oldCards = timelineList.querySelectorAll('.timeline-dynamic-card');
+            oldCards.forEach(card => card.remove());
+
+            if (childLogs.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                
+                childLogs.forEach(log => {
+                    const card = document.createElement('div');
+                    card.className = "timeline-dynamic-card bg-white border border-slate-200 rounded-xl p-3 shadow-2xs flex items-start justify-between space-x-2 transition duration-150 hover:bg-slate-50";
+                    card.innerHTML = `
+                        <div class="flex items-start space-x-3">
+                            <span class="text-xl p-1 bg-slate-100 rounded-lg flex items-center justify-center">${log.emoji}</span>
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <h4 class="font-bold text-slate-800 text-sm">${log.label}</h4>
+                                    <span class="text-[10px] text-slate-400 font-semibold bg-slate-100 px-1.5 py-0.5 rounded">${log.category}</span>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-1">${log.details}</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end justify-between h-full space-y-4">
+                            <span class="text-[10px] text-slate-400 font-medium">${log.time}</span>
+                            <button onclick="deleteLogItem(${log.id}, event)" class="text-slate-300 hover:text-red-500 focus:outline-none">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        </div>
+                    `;
+                    timelineList.appendChild(card);
+                });
+            }
+
+            // Adjust insights dynamically
+            const insightsList = document.getElementById('insights-list');
+            insightsList.innerHTML = '';
+            
+            if (incidentCount >= 2) {
+                insightsList.innerHTML += `<li>Multiple stressful events recorded today. Take 5 minutes to breathe when you get a quiet moment.</li>`;
+            }
+            if (medsCount === 0) {
+                insightsList.innerHTML += `<li>Focus and calm windows may improve once morning medication is marked.</li>`;
+            } else {
+                insightsList.innerHTML += `<li>Medication logged successfully. Keep track of behaviors in next 2 hours.</li>`;
+            }
+            if (mealsCount > 0) {
+                insightsList.innerHTML += `<li>Meals logged successfully today. Keep monitoring dairy/sugar intake.</li>`;
+            } else {
+                insightsList.innerHTML += `<li>No meals tracked yet today. Ensure dietary triggers are logged if refused.</li>`;
+            }
+        }
+
+        // Item deletion
+        function deleteLogItem(id, event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            logsState = logsState.filter(log => log.id !== id);
+            updateDashboardView();
+            showToast("Log removed", "Now");
+        }
+
+        // Custom Modal handlers to avoid standard alerts
+        function triggerMockAlert(title, message) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-desc').textContent = message;
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+
+        // Bootstrapping default state on load
+        window.onload = function() {
+            updateDashboardView();
+        }
+    </script>
+</body>
+</html>

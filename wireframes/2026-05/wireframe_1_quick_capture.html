@@ -1,0 +1,131 @@
+
+<style>
+  .phone { width: 375px; background: var(--color-background-primary); border-radius: 40px; border: 1.5px solid var(--color-border-secondary); overflow: hidden; margin: 0 auto; font-family: var(--font-sans); }
+  .status-bar { background: var(--color-background-secondary); padding: 12px 20px 8px; display: flex; justify-content: space-between; align-items: center; }
+  .sb-time { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+  .sb-icons { display: flex; gap: 6px; align-items: center; color: var(--color-text-secondary); font-size: 14px; }
+  .top-bar { padding: 12px 20px 8px; display: flex; justify-content: space-between; align-items: center; background: var(--color-background-primary); border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .child-selector { display: flex; align-items: center; gap: 6px; background: var(--color-background-secondary); border-radius: 20px; padding: 6px 12px; cursor: pointer; border: 0.5px solid var(--color-border-tertiary); }
+  .child-avatar { width: 24px; height: 24px; border-radius: 50%; background: #AFA9EC; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; color: #26215C; }
+  .child-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+  .privacy-badge { font-size: 11px; color: var(--color-text-secondary); display: flex; align-items: center; gap: 4px; }
+  .voice-section { padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .voice-btn { width: 100px; height: 100px; border-radius: 50%; background: #7F77DD; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; gap: 4px; }
+  .voice-label { font-size: 11px; color: #EEEDFE; font-weight: 500; }
+  .voice-hint { font-size: 11px; color: var(--color-text-secondary); text-align: center; line-height: 1.4; }
+  .section { padding: 0 16px 12px; }
+  .section-label { font-size: 11px; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; padding: 0 2px; }
+  .tag-grid { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tag { padding: 7px 13px; border-radius: 20px; font-size: 12px; cursor: pointer; border: 0.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-primary); white-space: nowrap; }
+  .tag.behavior { border-color: #AFA9EC; background: #EEEDFE; color: #3C3489; }
+  .tag.food { border-color: #9FE1CB; background: #E1F5EE; color: #085041; }
+  .tag.med { border-color: #FAC775; background: #FAEEDA; color: #633806; }
+  .tag.emotion { border-color: #F4C0D1; background: #FBEAF0; color: #4B1528; }
+  .bottom-nav { display: flex; background: var(--color-background-secondary); border-top: 0.5px solid var(--color-border-tertiary); padding: 10px 0 18px; }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
+  .nav-label { font-size: 10px; color: var(--color-text-secondary); }
+  .nav-item.active .nav-label { color: #534AB7; }
+  .nav-item.active i { color: #534AB7; }
+  .divider { height: 0.5px; background: var(--color-border-tertiary); margin: 4px 16px 10px; }
+</style>
+
+<div style="padding: 1.5rem 0; display: flex; justify-content: center;">
+  <div>
+    <p style="text-align: center; font-size: 13px; color: var(--color-text-secondary); margin: 0 0 12px; font-weight: 500;">Screen 1 — Quick Capture</p>
+    <div class="phone">
+      <div class="status-bar">
+        <span class="sb-time">9:41</span>
+        <div class="sb-icons">
+          <i class="ti ti-wifi" aria-hidden="true"></i>
+          <i class="ti ti-battery" aria-hidden="true"></i>
+        </div>
+      </div>
+
+      <div class="top-bar">
+        <div class="child-selector">
+          <div class="child-avatar">A</div>
+          <span class="child-name">Aarav</span>
+          <i class="ti ti-chevron-down" style="font-size:13px; color: var(--color-text-secondary);" aria-hidden="true"></i>
+        </div>
+        <div class="privacy-badge">
+          <i class="ti ti-lock" style="font-size:13px;" aria-hidden="true"></i>
+          Stored locally
+        </div>
+      </div>
+
+      <div class="voice-section">
+        <div class="voice-btn" role="button" aria-label="Hold to speak">
+          <i class="ti ti-microphone" style="font-size: 32px; color: #EEEDFE;" aria-hidden="true"></i>
+          <span class="voice-label">Hold to speak</span>
+        </div>
+        <p class="voice-hint">"Had a meltdown after lunch" · "Took medication at 2 PM"</p>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="section">
+        <div class="section-label">Behavior</div>
+        <div class="tag-grid">
+          <span class="tag behavior">Meltdown</span>
+          <span class="tag behavior">Calm</span>
+          <span class="tag behavior">Aggressive</span>
+          <span class="tag behavior">Focused</span>
+          <span class="tag behavior">Stimming</span>
+          <span class="tag behavior">Anxious</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">Food</div>
+        <div class="tag-grid">
+          <span class="tag food">Ate well</span>
+          <span class="tag food">Refused food</span>
+          <span class="tag food">Dairy</span>
+          <span class="tag food">Sugar</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">Medication</div>
+        <div class="tag-grid">
+          <span class="tag med">✓ Taken</span>
+          <span class="tag med">Missed</span>
+          <span class="tag med">Side effect</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">Emotion</div>
+        <div class="tag-grid">
+          <span class="tag emotion">Happy</span>
+          <span class="tag emotion">Irritated</span>
+          <span class="tag emotion">Tired</span>
+          <span class="tag emotion">Overwhelmed</span>
+        </div>
+      </div>
+
+      <div class="bottom-nav">
+        <div class="nav-item active">
+          <i class="ti ti-home" style="font-size:20px;" aria-hidden="true"></i>
+          <span class="nav-label">Home</span>
+        </div>
+        <div class="nav-item">
+          <i class="ti ti-timeline" style="font-size:20px; color: var(--color-text-secondary);" aria-hidden="true"></i>
+          <span class="nav-label">Timeline</span>
+        </div>
+        <div class="nav-item">
+          <i class="ti ti-chart-bar" style="font-size:20px; color: var(--color-text-secondary);" aria-hidden="true"></i>
+          <span class="nav-label">Insights</span>
+        </div>
+        <div class="nav-item">
+          <i class="ti ti-file-text" style="font-size:20px; color: var(--color-text-secondary);" aria-hidden="true"></i>
+          <span class="nav-label">Reports</span>
+        </div>
+        <div class="nav-item">
+          <i class="ti ti-settings" style="font-size:20px; color: var(--color-text-secondary);" aria-hidden="true"></i>
+          <span class="nav-label">Settings</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
