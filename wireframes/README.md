@@ -10,10 +10,10 @@ This directory contains wireframes and UI mockups for OpenSpectrum.
 
 | File | Description |
 |------|-------------|
-| [Input-wireframes-CG.png](2026-05/Input-wireframes-CG.png) | ChatGPT 3-screen input design |
-| [gemini-input-wireframe.html](2026-05/gemini-input-wireframe.html) | Gemini-generated input screen wireframe |
-| [wireframe_1_quick_capture.html](2026-05/wireframe_1_quick_capture.html) | Static wireframe for the Quick Capture screen |
-| [parent-app-wireframe.html](2026-05/parent-app-wireframe.html) | Clickable sample workflow prototype |
+| [Input-wireframes-CG.png](https://open-spectrum-org.github.io/openspectrum-docs/wireframes/2026-05/Input-wireframes-CG.png) | ChatGPT 3-screen input design |
+| [gemini-input-wireframe.html](https://open-spectrum-org.github.io/openspectrum-docs/wireframes/2026-05/gemini-input-wireframe.html) | Gemini-generated input screen wireframe |
+| [wireframe_1_quick_capture.html](https://open-spectrum-org.github.io/openspectrum-docs/wireframes/2026-05/wireframe_1_quick_capture.html) | Static wireframe for the Quick Capture screen |
+| [parent-app-wireframe.html](https://open-spectrum-org.github.io/openspectrum-docs/wireframes/2026-05/parent-app-wireframe.html) | Clickable sample workflow prototype |
 
 ## MVP Screens Needed
 
